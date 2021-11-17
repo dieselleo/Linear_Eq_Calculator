@@ -11,6 +11,6 @@ package menus;
  */
 public interface MenuInterface {
     
-    public void printMenu(String option);
+    public void printMenu();
     
 }

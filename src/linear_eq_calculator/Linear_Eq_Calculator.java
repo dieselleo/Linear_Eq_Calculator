@@ -43,9 +43,8 @@ public class Linear_Eq_Calculator {
 //        conn.close();
 
         Menu menu = new Menu();
-        menu.printMenu("99");
-        while(!UserInput.getInput().equals("0")){
-            menu.printMenu(UserInput.getInput());
+        while(menu.keepGoing()==true){
+            menu.printMenu();
         }
         
     }
