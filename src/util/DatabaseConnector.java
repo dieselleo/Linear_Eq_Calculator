@@ -7,9 +7,7 @@ package util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  *
@@ -18,10 +16,10 @@ import java.sql.Statement;
 
 public class DatabaseConnector {
 
-    private static String url = "jdbc:mysql://localhost:3306/calculator";    
-    private static String driverName = "com.mysql.jdbc.Driver";   
-    private static String username = "root";   
-    private static String password = "root";
+    private static final String url = "jdbc:mysql://localhost:3306/calculator";    
+    private static final String driverName = "com.mysql.jdbc.Driver";   
+    private static final String username = "root";   
+    private static final String password = "root";
     private static Connection conn;
 
     public static Connection getConnection() {
