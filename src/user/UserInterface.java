@@ -17,7 +17,13 @@ public interface UserInterface {
     
     public void createUser(String[] newUser) throws SQLException;
     
+    public void deleteUser(String user) throws SQLException;
+    
     public boolean checkPassword(String pass);
+    
+    public boolean checkUser (String user) throws SQLException;
+    
+    public void getAllUsers();
     
     public String getUserName();
     

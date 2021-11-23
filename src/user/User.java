@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import util.DatabaseConnector;
 
 /**
@@ -76,12 +78,23 @@ public class User implements UserInterface{
     public void createUser(String[] newUser) throws SQLException {
         conn = DatabaseConnector.getConnection();
         stmt = conn.createStatement();
-        stmt.executeQuery("INSERT INTO user (user_name, password, first_name, type) VALUES ('"+newUser[0]+"', '"+newUser[1]+"', '"+newUser[2]+"', '"+newUser[3]+"', 'U')");
+        stmt.executeUpdate("INSERT INTO user (user_name, password, first_name, last_name, type) VALUES ('"+newUser[0]+"', '"+newUser[1]+"', '"+newUser[2]+"', '"+newUser[3]+"', 'U')");
         
         stmt.close();
         conn.close();
     }
     
+    @Override
+    public void deleteUser(String user) throws SQLException {
+        conn = DatabaseConnector.getConnection();
+        stmt = conn.createStatement();
+        stmt.executeUpdate("DELETE FROM user WHERE user_name='"+user+"'");
+        
+        stmt.close();
+        conn.close();
+    }
+    
+    @Override
     public boolean checkUser (String user) throws SQLException{
         
         conn = DatabaseConnector.getConnection();
@@ -101,6 +114,28 @@ public class User implements UserInterface{
         conn.close();
         
         return false;
+    }
+    
+    @Override
+    public void getAllUsers() {
+        
+        conn = DatabaseConnector.getConnection();
+        try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT user_name from user");
+            
+            while(rs.next()) {
+                System.out.println(rs.getString("user_name"));
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @Override

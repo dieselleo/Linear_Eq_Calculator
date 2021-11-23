@@ -179,14 +179,57 @@ public class Menu implements MenuInterface{
                 
                 if(option==0){
                     this.menuLvl=1; //back to main
-                } else if (option==1) {
-                    System.out.println("lets solve eq");
-                } else if (option==2){
-                    System.out.println("see my user");
-                } else {
-                    System.out.println("lets manage users");
+                } else {                    
+                    this.menuLvl++;
                 }                
             break;
+            
+            //menu lvl 4
+            //user can solve eq, see its user and manage other users (if adm)
+            case 4:
+                
+                switch(option){
+                    case 1:
+                        System.out.println("lets solve eq");
+                    break;
+                    
+                    case 2:
+                        System.out.println("see my user");
+                    break;
+                    
+                    case 3:
+                        System.out.println("These are all the users registered in the system!");
+                        user.getAllUsers();
+                        System.out.println("\nIf you like to remove one of these users, type its name exactly how it appears in the list and press enter.");
+                        System.out.println("If you like to go back, press 0 and enter.");
+                        String action=UserInput.getInput();
+                        if(action=="0"){
+                            this.menuLvl--;
+                        } else {
+                            System.out.println("Do you really like to DELETE the user "+action+" from the system?");
+                            System.out.println("\n1 - Yes\n2 - No");
+                            this.numOpt=2;
+                            this.option = Integer.parseInt(UserInput.getInput());
+                            while (this.option<1 || this.option>numOpt){
+                                System.out.println("Invalid Option. Try again!\n");
+                                this.option = Integer.parseInt(UserInput.getInput());
+                            }
+                            if(option==1){
+                                try {
+                                    user.deleteUser(action);
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            } else {
+                                this.menuLvl--;
+                            }
+                        }
+                    break;
+                    
+                    default:
+                    break;
+                    
+                }
             
             //menu lvl
             default:
