@@ -12,6 +12,7 @@ package equations;
 public class Equation implements EquationInterface{
     
     private String eq;
+    private int x,y,z,n;
     
     public Equation (String eq){
 

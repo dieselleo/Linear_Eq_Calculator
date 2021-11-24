@@ -33,10 +33,10 @@ public interface UserInterface {
     
     public char getType();
         
-    public void setFName(String fName);
+    public void setFName(String newFName, String user) throws SQLException;
     
-    public void setLName(String lName);
+    public void setLName(String newLName, String user) throws SQLException;
     
-    public void setPassword (String pass);
+    public void setPassword (String newPass, String user) throws SQLException;
     
 }

@@ -57,12 +57,7 @@ public class Menu implements MenuInterface{
                 System.out.println("1 - Enter with already existent user");
                 System.out.println("2 - Create new user");
                 System.out.println("0 - Exit system");
-                this.numOpt=2;
-                this.option=Integer.parseInt(UserInput.getInput());
-                while (this.option<0 || this.option>numOpt){
-                    System.out.println("Invalid Option! Please, try again!");
-                    this.option=Integer.parseInt(UserInput.getInput());
-                }
+                chooseOption(2);
                 if(option==0){
                     this.menuLvl--;
                 } else {
@@ -121,13 +116,7 @@ public class Menu implements MenuInterface{
                         System.out.println("Last name: "+newUser[3]);
                         System.out.println("\n1 - Yes");
                         System.out.println("0 - No");
-                        this.numOpt=1;
-                        this.option = Integer.parseInt(UserInput.getInput());
-                        
-                        while (this.option<0 || this.option>numOpt){
-                            System.out.println("Invalid Option. Try again!\n");
-                            this.option = Integer.parseInt(UserInput.getInput());
-                        }
+                        chooseOption(1);
                         
                         if(option==0){
                             this.menuLvl--; //lvl 1
@@ -157,24 +146,14 @@ public class Menu implements MenuInterface{
                     System.out.println("1 - Solve Equation");
                     System.out.println("2 - My User");
                     System.out.println("3 - Manage Users");
-                    System.out.println("0 - Exit");
-                    this.numOpt=3;
-                    this.option = Integer.parseInt(UserInput.getInput());
-                    while (this.option<0 || this.option>numOpt){
-                        System.out.println("Invalid Option. Try again!\n");
-                        this.option = Integer.parseInt(UserInput.getInput());
-                    }
+                    System.out.println("0 - Back to Main Menu");
+                    chooseOption(3);
                 } else {
                     System.out.println("Choose an option!");
                     System.out.println("1 - Solve Equation");
                     System.out.println("2 - My User");
-                    System.out.println("0 - Exit\n");
-                    this.numOpt=2;
-                    this.option = Integer.parseInt(UserInput.getInput());
-                    while (this.option<0 || this.option>numOpt){
-                        System.out.println("Invalid Option. Try again!\n");
-                        this.option = Integer.parseInt(UserInput.getInput());
-                    }
+                    System.out.println("0 - Back to Main Menu\n");
+                    chooseOption(2);
                 }
                 
                 if(option==0){
@@ -194,7 +173,58 @@ public class Menu implements MenuInterface{
                     break;
                     
                     case 2:
-                        System.out.println("see my user");
+                        System.out.println("Username: "+user.getUserName());
+                        System.out.println("First Name: "+user.getFName());
+                        System.out.println("Last Name: "+user.getLName());
+                        System.out.println("\n1- Modify First Name");
+                        System.out.println("2- Modify Last Name");
+                        System.out.println("3- Modify Password");
+                        System.out.println("0 - Go Back");
+                        chooseOption(3);
+                        switch(option){
+                            case 1:
+                                System.out.println("Enter the new First Name and press enter:");
+                                {
+                                    try {
+                                        user.setFName(UserInput.getInput(), user.getUserName());
+                                        
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                                this.option=2;
+                                break;
+                                
+                            case 2:
+                                System.out.println("Enter the new Last Name and press enter:");
+                                {
+                                    try {
+                                        user.setLName(UserInput.getInput(), user.getUserName());
+                                        
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                                this.option=2;
+                                break;
+                            
+                            case 3:
+                                System.out.println("Enter the new Password and press enter:");
+                                {
+                                    try {
+                                        user.setPassword(UserInput.getInput(), user.getUserName());
+                                        
+                                    } catch (SQLException ex) {
+                                        Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
+                                }
+                                this.option=2;
+                                break;
+                            case 0:
+                                this.menuLvl--;
+                                break;
+                        }
+                        
                     break;
                     
                     case 3:
@@ -203,39 +233,32 @@ public class Menu implements MenuInterface{
                         System.out.println("\nIf you like to remove one of these users, type its name exactly how it appears in the list and press enter.");
                         System.out.println("If you like to go back, press 0 and enter.");
                         String action=UserInput.getInput();
-                        if(action=="0"){
+                        if(action.equals("0")){
                             this.menuLvl--;
                         } else {
                             System.out.println("Do you really like to DELETE the user "+action+" from the system?");
-                            System.out.println("\n1 - Yes\n2 - No");
-                            this.numOpt=2;
-                            this.option = Integer.parseInt(UserInput.getInput());
-                            while (this.option<1 || this.option>numOpt){
-                                System.out.println("Invalid Option. Try again!\n");
-                                this.option = Integer.parseInt(UserInput.getInput());
-                            }
-                            if(option==1){
+                            System.out.println("\n1 - Yes\n0 - No");
+                            chooseOption(2);
+                            if(option==0){
+                                this.menuLvl--;
+                            } else {
                                 try {
                                     user.deleteUser(action);
                                 } catch (SQLException ex) {
                                     Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-                            } else {
                                 this.menuLvl--;
                             }
                         }
                     break;
                     
-                    default:
-                    break;
-                    
                 }
             
             //menu lvl
-            default:
-                System.out.println("Invalid Option. Please, try again!\n");
-                this.menuLvl=1;
-                break;
+//            default:
+//                System.out.println("AAAAAAAAAAInvalid Option. Please, try again!\n");
+//                this.menuLvl=1;
+//                break;
         }
     }
     
@@ -243,7 +266,7 @@ public class Menu implements MenuInterface{
         
         conn = DatabaseConnector.getConnection();
         stmt = conn.createStatement();
-        rs = stmt.executeQuery("SELECT user_name from user WHERE user_name like '%"+user+"%'");
+        rs = stmt.executeQuery("SELECT user_name from user WHERE user_name='"+user+"'");
         
         
         
@@ -285,7 +308,7 @@ public class Menu implements MenuInterface{
         
         conn = DatabaseConnector.getConnection();
         stmt = conn.createStatement();
-        rs = stmt.executeQuery("SELECT type from user WHERE user_name like '%"+user+"%'");
+        rs = stmt.executeQuery("SELECT type from user WHERE user_name='"+user+"'");
         
         while(rs.next()) {
             return rs.getString("type").charAt(0);
@@ -305,6 +328,14 @@ public class Menu implements MenuInterface{
             return false;
         }        
         return true;
+    }
+    
+    private void chooseOption(int numOpt){
+        this.option = Integer.parseInt(UserInput.getInput());
+        while (this.option<0 || this.option>numOpt){
+            System.out.println("Invalid Option. Try again!\n");
+            this.option = Integer.parseInt(UserInput.getInput());
+        }
     }
     
 }

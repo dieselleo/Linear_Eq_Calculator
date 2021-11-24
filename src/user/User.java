@@ -169,18 +169,42 @@ public class User implements UserInterface{
     }
 
     @Override
-    public void setFName(String fName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setFName(String newFName, String user) throws SQLException {
+        conn = DatabaseConnector.getConnection();
+        stmt = conn.createStatement();
+        stmt.executeUpdate("UPDATE user SET first_name='"+newFName+"' WHERE user_name='"+user+"'");
+        
+        stmt.close();
+        conn.close();
+        
+        this.fName=newFName;
+        System.out.println("New First Name is "+newFName);
     }
 
     @Override
-    public void setLName(String lName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setLName(String newLName, String user) throws SQLException {
+        conn = DatabaseConnector.getConnection();
+        stmt = conn.createStatement();
+        stmt.executeUpdate("UPDATE user SET last_name='"+newLName+"' WHERE user_name='"+user+"'");
+        
+        stmt.close();
+        conn.close();
+        
+        this.lName=newLName;
+        System.out.println("New Last Name is "+newLName);
     }
 
     @Override
-    public void setPassword(String pass) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void setPassword(String newPass, String user) throws SQLException {
+        conn = DatabaseConnector.getConnection();
+        stmt = conn.createStatement();
+        stmt.executeUpdate("UPDATE user SET password='"+newPass+"' WHERE user_name='"+user+"'");
+        
+        stmt.close();
+        conn.close();
+        
+        this.password=newPass;
+        System.out.println("New Password is "+newPass);
     }
     
 }
