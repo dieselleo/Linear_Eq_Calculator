@@ -5,6 +5,10 @@
  */
 package linear_eq_calculator;
 
+import equations.Calculator;
+import equations.CalculatorInterface;
+import equations.Equation;
+import equations.EquationInterface;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,9 +46,16 @@ public class Linear_Eq_Calculator {
 //        stmt.close();
 //        conn.close();
 
-        Menu menu = new Menu();
-        while(menu.keepGoing()==true){
-            menu.printMenu();
+//        Menu menu = new Menu();
+//        while(menu.keepGoing()==true){
+//            menu.printMenu();
+//        }
+
+        Equation eq1 = new Equation(1,2,-5,6);
+        Equation eq2 = new Equation(-6,12,-88,-10);
+        Calculator calc = new Calculator(eq1, eq2);
+        for(EquationInterface e : calc.getEquations()){
+            System.out.println(e.getEquation());
         }
         
     }

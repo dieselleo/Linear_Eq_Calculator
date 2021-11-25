@@ -11,6 +11,6 @@ package equations;
  */
 public interface EquationInterface {
     
-    public String getEquation (String eq);
+    public String getEquation ();
     
 }
