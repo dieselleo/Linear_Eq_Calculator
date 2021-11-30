@@ -63,6 +63,20 @@ public class Linear_Eq_Calculator {
         System.out.println(calc.getDetA());
         calc.printMatrixX();
         
+        System.out.println("+++++++++++ new calculation ++++++++++++");
+        Equation eq3 = new Equation(1,2,-10,6);
+        Equation eq4 = new Equation(-6,12,8,-10);
+        Equation eq5 = new Equation(-6,12,-6,-5);
+        Calculator calc1 = new Calculator(eq3, eq4, eq5);
+        for(EquationInterface e : calc1.getEquations()){
+            System.out.println(e.getEquation());
+        }
+        calc1.printMatrixA();
+        calc1.printMatrixAI();
+        calc1.printMatrixB();
+        System.out.println(calc1.getDetA());
+        calc1.printMatrixX();
+        
     }
     
 }

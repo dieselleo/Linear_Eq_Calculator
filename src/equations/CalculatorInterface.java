@@ -15,6 +15,6 @@ public interface CalculatorInterface {
     
     public List<EquationInterface> getEquations();
     
-    public void calculate(double[][] matrixA, double[][] matrixB, double detA);
+    public void calculate();
     
 }

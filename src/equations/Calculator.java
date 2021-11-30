@@ -20,6 +20,8 @@ public class Calculator implements CalculatorInterface{
     double detA;
     double[][] matrixX;
     double[][] matrixB;
+    double[][] coFactor;
+    double[][] coFactorT;
     
     public Calculator(Equation eq1, Equation eq2){
         this.equations = new ArrayList<EquationInterface>();
@@ -28,7 +30,7 @@ public class Calculator implements CalculatorInterface{
         setMatrices(equations);
         calcInvA();
         calcDetA();
-        calculate(this.matrixAI, this.matrixB, this.detA);
+        calculate();
     }
     
     public Calculator(Equation eq1, Equation eq2, Equation eq3){
@@ -36,7 +38,12 @@ public class Calculator implements CalculatorInterface{
         this.equations.add(eq1);
         this.equations.add(eq2);
         this.equations.add(eq3);
+        this.coFactor = new double[3][3];
+        this.coFactorT = new double[3][3];
         setMatrices(equations);
+        calcInvA();
+        calcDetA();
+        calculate();
     }
 
     @Override
@@ -45,17 +52,37 @@ public class Calculator implements CalculatorInterface{
     }
 
     @Override
-    public void calculate(double[][] matrixAI, double[][] matrixB, double detA) {
-        
-        double[][] calc = new double[matrixAI.length][matrixAI.length];
-        this.matrixX = new double[matrixAI.length][1];
-        for(int i=0; i<calc.length; i++){
-            for(int j=0; j< calc.length; j++){
-                calc[i][j] = ((matrixAI[i][j]*matrixB[j][0]));
-            }            
-        }
+    public void calculate() {
+        if(this.equations.size()==2){
+            double[][] calc = new double[this.matrixAI.length][this.matrixAI.length];
+            this.matrixX = new double[this.matrixAI.length][1];
+            for(int i=0; i<calc.length; i++){
+                for(int j=0; j< calc.length; j++){
+                    calc[i][j] = ((this.matrixAI[i][j]*this.matrixB[j][0]));
+                }            
+            }
         this.matrixX[0][0] = (calc[0][0]+calc[0][1])*(1/this.detA);
         this.matrixX[1][0] = (calc[1][0]+calc[1][1])*(1/this.detA);
+        } else {
+            // calculating matrix inverse
+             double[][] calc = new double[3][1];
+             calc[0][0] = this.matrixAI[0][0]+
+                     this.matrixAI[0][1]+
+                     this.matrixAI[0][2];
+             calc[1][0] = this.matrixAI[1][0]+
+                     this.matrixAI[1][1]+
+                     this.matrixAI[1][2];
+             calc[2][0] = this.matrixAI[2][0]+
+                     this.matrixAI[2][1]+
+                     this.matrixAI[2][2];
+             
+             // multiplying matrix inverse by matrix b
+             this.matrixX = new double[calc.length][1];
+             this.matrixX[0][0] = calc[0][0]*this.matrixB[0][0];
+             this.matrixX[1][0] = calc[1][0]*this.matrixB[1][0];
+             this.matrixX[2][0] = calc[2][0]*this.matrixB[2][0];
+        }
+        
         
     }
     
@@ -63,9 +90,9 @@ public class Calculator implements CalculatorInterface{
         
         int size = equations.size();
         this.matrixA = new double[size][size];
-        this.matrixB = new double[size][1];
-        for(int i=0; i<size; i++){
-            this.matrixB[i][0] = equations.get(i).getC();
+            this.matrixB = new double[size][1];
+            for(int i=0; i<size; i++){
+                this.matrixB[i][0] = equations.get(i).getC();
                 for(int j=0; j< size; j++){	
                     switch (j){
                         case 0:
@@ -79,21 +106,74 @@ public class Calculator implements CalculatorInterface{
                             break;
                         default:
                     }              
+                }
             }
-        }
+//        if (size==2){
+//            
+//        } else {
+//            System.out.println("setting 3x3");
+//        }
         
     }
     
     public void calcInvA(){
-        this.matrixAI = new double[this.matrixA.length][this.matrixA.length];
-        this.matrixAI[0][0] = this.matrixA[1][1]; // a receives d
-        this.matrixAI[1][1] = this.matrixA[0][0]; // d receives a
-        this.matrixAI[0][1] = (this.matrixA[0][1])*-1; // b receives -b
-        this.matrixAI[1][0] = (this.matrixA[1][0])*-1; // c receives -c
+        
+        if(this.equations.size()==2){
+            this.matrixAI = new double[this.matrixA.length][this.matrixA.length];
+            this.matrixAI[0][0] = this.matrixA[1][1]; // a receives d
+            this.matrixAI[1][1] = this.matrixA[0][0]; // d receives a
+            this.matrixAI[0][1] = (this.matrixA[0][1])*-1; // b receives -b
+            this.matrixAI[1][0] = (this.matrixA[1][0])*-1; // c receives -c
+        } else {
+            this.matrixAI = new double[this.matrixA.length][this.matrixA.length];
+            // multiplying co-factor transposed by detA
+            for(int i=0; i<(this.matrixAI.length); i++){
+                for(int j=0; j<(this.matrixAI.length); j++){
+                    this.matrixAI[i][j] = this.coFactorT[i][j]*this.detA;
+                }
+            }            
+        }
     }
     
     public void calcDetA(){
-        this.detA = (this.matrixA[0][0]*this.matrixA[1][1])-(this.matrixA[0][1]*this.matrixA[1][0]); // ad - bc
+        if(this.equations.size()==2){
+            this.detA = (this.matrixA[0][0]*this.matrixA[1][1])-(this.matrixA[0][1]*this.matrixA[1][0]); // ad - bc
+        } else {
+            // getting minor matrix
+            this.coFactor[0][0] = (this.matrixA[1][1]*this.matrixA[2][2])-(this.matrixA[1][2]*this.matrixA[2][1]);
+            this.coFactor[0][1] = (this.matrixA[1][0]*this.matrixA[2][2])-(this.matrixA[1][2]*this.matrixA[2][0]);
+            this.coFactor[0][2] = (this.matrixA[1][0]*this.matrixA[2][1])-(this.matrixA[1][1]*this.matrixA[2][0]);
+            this.coFactor[1][0] = (this.matrixA[0][1]*this.matrixA[2][2])-(this.matrixA[0][2]*this.matrixA[2][1]);
+            this.coFactor[1][1] = (this.matrixA[0][0]*this.matrixA[2][2])-(this.matrixA[0][2]*this.matrixA[2][0]);
+            this.coFactor[1][2] = (this.matrixA[0][0]*this.matrixA[2][1])-(this.matrixA[0][1]*this.matrixA[2][0]);
+            this.coFactor[2][0] = (this.matrixA[0][1]*this.matrixA[1][2])-(this.matrixA[0][2]*this.matrixA[1][1]);
+            this.coFactor[2][1] = (this.matrixA[0][0]*this.matrixA[1][2])-(this.matrixA[0][2]*this.matrixA[1][0]);
+            this.coFactor[2][2] = (this.matrixA[0][0]*this.matrixA[1][1])-(this.matrixA[0][1]*this.matrixA[1][0]);
+            
+            //placing signs for co-factor
+            this.coFactor[0][1] = (this.coFactor[0][1]*-1);
+            this.coFactor[1][0] = (this.coFactor[0][1]*-1);
+            this.coFactor[1][2] = (this.coFactor[0][1]*-1);
+            this.coFactor[2][1] = (this.coFactor[0][1]*-1);
+            
+            // calculating determinant
+            this.detA = (this.matrixA[0][0]*this.coFactor[0][0])+
+                    (this.matrixA[0][1]*this.coFactor[0][1])+
+                    (this.matrixA[0][2]*this.coFactor[0][2]);
+            this.detA = (1/this.detA);
+            
+            // creating transpose of co-factor
+            this.coFactorT[0][0] = this.coFactor[0][0];
+            this.coFactorT[0][1] = this.coFactor[1][0];
+            this.coFactorT[0][2] = this.coFactor[2][0];
+            this.coFactorT[1][0] = this.coFactor[0][1];
+            this.coFactorT[1][1] = this.coFactor[1][1];
+            this.coFactorT[1][2] = this.coFactor[2][1];
+            this.coFactorT[2][0] = this.coFactor[0][2];
+            this.coFactorT[2][1] = this.coFactor[1][2];
+            this.coFactorT[2][2] = this.coFactor[2][2];
+        }
+        
     }
     
     public void printMatrixA(){
