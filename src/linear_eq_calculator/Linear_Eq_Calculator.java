@@ -51,12 +51,17 @@ public class Linear_Eq_Calculator {
 //            menu.printMenu();
 //        }
 
-        Equation eq1 = new Equation(1,2,-5,6);
-        Equation eq2 = new Equation(-6,12,-88,-10);
+        Equation eq1 = new Equation(1,2,6);
+        Equation eq2 = new Equation(-6,12,-10);
         Calculator calc = new Calculator(eq1, eq2);
         for(EquationInterface e : calc.getEquations()){
             System.out.println(e.getEquation());
         }
+        calc.printMatrixA();
+        calc.printMatrixAI();
+        calc.printMatrixB();
+        System.out.println(calc.getDetA());
+        calc.printMatrixX();
         
     }
     

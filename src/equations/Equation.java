@@ -24,6 +24,16 @@ public class Equation implements EquationInterface{
         this.equation=createEquation();        
     }
     
+    public Equation (Integer x, Integer y, Integer c){
+
+        this.x = x;
+        this.y = y;
+        this.z = 0;
+        this.c = c;
+        
+        this.equation=createEquation();        
+    }
+    
     private String createEquation(){
         
         String equation="";
