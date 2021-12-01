@@ -41,8 +41,8 @@ public class Calculator implements CalculatorInterface{
         this.coFactor = new double[3][3];
         this.coFactorT = new double[3][3];
         setMatrices(equations);
-        calcInvA();
         calcDetA();
+        calcInvA();
         calculate();
     }
 
@@ -140,21 +140,21 @@ public class Calculator implements CalculatorInterface{
             this.detA = (this.matrixA[0][0]*this.matrixA[1][1])-(this.matrixA[0][1]*this.matrixA[1][0]); // ad - bc
         } else {
             // getting minor matrix
-            this.coFactor[0][0] = (this.matrixA[1][1]*this.matrixA[2][2])-(this.matrixA[1][2]*this.matrixA[2][1]);
-            this.coFactor[0][1] = (this.matrixA[1][0]*this.matrixA[2][2])-(this.matrixA[1][2]*this.matrixA[2][0]);
-            this.coFactor[0][2] = (this.matrixA[1][0]*this.matrixA[2][1])-(this.matrixA[1][1]*this.matrixA[2][0]);
-            this.coFactor[1][0] = (this.matrixA[0][1]*this.matrixA[2][2])-(this.matrixA[0][2]*this.matrixA[2][1]);
-            this.coFactor[1][1] = (this.matrixA[0][0]*this.matrixA[2][2])-(this.matrixA[0][2]*this.matrixA[2][0]);
-            this.coFactor[1][2] = (this.matrixA[0][0]*this.matrixA[2][1])-(this.matrixA[0][1]*this.matrixA[2][0]);
-            this.coFactor[2][0] = (this.matrixA[0][1]*this.matrixA[1][2])-(this.matrixA[0][2]*this.matrixA[1][1]);
-            this.coFactor[2][1] = (this.matrixA[0][0]*this.matrixA[1][2])-(this.matrixA[0][2]*this.matrixA[1][0]);
-            this.coFactor[2][2] = (this.matrixA[0][0]*this.matrixA[1][1])-(this.matrixA[0][1]*this.matrixA[1][0]);
+            this.coFactor[0][0] = ((this.matrixA[1][1]*this.matrixA[2][2])-(this.matrixA[1][2]*this.matrixA[2][1]));
+            this.coFactor[0][1] = ((this.matrixA[1][0]*this.matrixA[2][2])-(this.matrixA[1][2]*this.matrixA[2][0]));
+            this.coFactor[0][2] = ((this.matrixA[1][0]*this.matrixA[2][1])-(this.matrixA[1][1]*this.matrixA[2][0]));
+            this.coFactor[1][0] = ((this.matrixA[0][1]*this.matrixA[2][2])-(this.matrixA[0][2]*this.matrixA[2][1]));
+            this.coFactor[1][1] = ((this.matrixA[0][0]*this.matrixA[2][2])-(this.matrixA[0][2]*this.matrixA[2][0]));
+            this.coFactor[1][2] = ((this.matrixA[0][0]*this.matrixA[2][1])-(this.matrixA[0][1]*this.matrixA[2][0]));
+            this.coFactor[2][0] = ((this.matrixA[0][1]*this.matrixA[1][2])-(this.matrixA[0][2]*this.matrixA[1][1]));
+            this.coFactor[2][1] = ((this.matrixA[0][0]*this.matrixA[1][2])-(this.matrixA[0][2]*this.matrixA[1][0]));
+            this.coFactor[2][2] = ((this.matrixA[0][0]*this.matrixA[1][1])-(this.matrixA[0][1]*this.matrixA[1][0]));
             
             //placing signs for co-factor
             this.coFactor[0][1] = (this.coFactor[0][1]*-1);
-            this.coFactor[1][0] = (this.coFactor[0][1]*-1);
-            this.coFactor[1][2] = (this.coFactor[0][1]*-1);
-            this.coFactor[2][1] = (this.coFactor[0][1]*-1);
+            this.coFactor[1][0] = (this.coFactor[1][0]*-1);
+            this.coFactor[1][2] = (this.coFactor[1][2]*-1);
+            this.coFactor[2][1] = (this.coFactor[2][1]*-1);
             
             // calculating determinant
             this.detA = (this.matrixA[0][0]*this.coFactor[0][0])+
@@ -215,6 +215,28 @@ public class Calculator implements CalculatorInterface{
             System.out.print("|");
             for (int j = 0; j < this.matrixAI[i].length; j++){
                 System.out.print(this.matrixAI[i][j] + " ");
+            }
+            System.out.print("|\n");
+        }
+    }
+    
+    public void printCoFactor(){
+        System.out.println("\n == MATRIX CO-FACTOR == ");
+        for (int i = 0; i < this.coFactor.length; i++){
+            System.out.print("|");
+            for (int j = 0; j < this.coFactor[i].length; j++){
+                System.out.print(this.coFactor[i][j] + " ");
+            }
+            System.out.print("|\n");
+        }
+    }
+    
+    public void printCoFactorT(){
+        System.out.println("\n == MATRIX CO-FACTOR TRANSPOSED == ");
+        for (int i = 0; i < this.coFactorT.length; i++){
+            System.out.print("|");
+            for (int j = 0; j < this.coFactorT[i].length; j++){
+                System.out.print(this.coFactorT[i][j] + " ");
             }
             System.out.print("|\n");
         }

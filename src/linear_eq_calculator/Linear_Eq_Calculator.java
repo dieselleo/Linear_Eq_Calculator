@@ -64,9 +64,9 @@ public class Linear_Eq_Calculator {
         calc.printMatrixX();
         
         System.out.println("+++++++++++ new calculation ++++++++++++");
-        Equation eq3 = new Equation(1,2,-10,6);
-        Equation eq4 = new Equation(-6,12,8,-10);
-        Equation eq5 = new Equation(-6,12,-6,-5);
+        Equation eq3 = new Equation(3,2,-1,6);
+        Equation eq4 = new Equation(-2,2,1,3);
+        Equation eq5 = new Equation(1,1,1,4);
         Calculator calc1 = new Calculator(eq3, eq4, eq5);
         for(EquationInterface e : calc1.getEquations()){
             System.out.println(e.getEquation());
@@ -74,6 +74,8 @@ public class Linear_Eq_Calculator {
         calc1.printMatrixA();
         calc1.printMatrixAI();
         calc1.printMatrixB();
+        calc1.printCoFactor();
+        calc1.printCoFactorT();
         System.out.println(calc1.getDetA());
         calc1.printMatrixX();
         
