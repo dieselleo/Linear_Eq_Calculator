@@ -65,22 +65,27 @@ public class Calculator implements CalculatorInterface{
         this.matrixX[1][0] = (calc[1][0]+calc[1][1])*(1/this.detA);
         } else {
             // calculating matrix inverse
-             double[][] calc = new double[3][1];
-             calc[0][0] = this.matrixAI[0][0]+
-                     this.matrixAI[0][1]+
-                     this.matrixAI[0][2];
-             calc[1][0] = this.matrixAI[1][0]+
-                     this.matrixAI[1][1]+
-                     this.matrixAI[1][2];
-             calc[2][0] = this.matrixAI[2][0]+
-                     this.matrixAI[2][1]+
-                     this.matrixAI[2][2];
+             double[][] calc = new double[3][3];
+             for(int i=0; i<matrixAI.length; i++){
+                for(int j=0; j< matrixAI.length; j++){
+                    calc[i][j] = ((this.matrixAI[i][j]*this.matrixB[j][0]));
+                }            
+            }
+             calc[0][0] = calc[0][0]+
+                     calc[0][1]+
+                     calc[0][2];
+             calc[1][0] = calc[1][0]+
+                     calc[1][1]+
+                     calc[1][2];
+             calc[2][0] = calc[2][0]+
+                     calc[2][1]+
+                     calc[2][2];
              
              // multiplying matrix inverse by matrix b
              this.matrixX = new double[calc.length][1];
-             this.matrixX[0][0] = calc[0][0]*this.matrixB[0][0];
-             this.matrixX[1][0] = calc[1][0]*this.matrixB[1][0];
-             this.matrixX[2][0] = calc[2][0]*this.matrixB[2][0];
+             this.matrixX[0][0] = calc[0][0];
+             this.matrixX[1][0] = calc[1][0];
+             this.matrixX[2][0] = calc[2][0];
         }
         
         
