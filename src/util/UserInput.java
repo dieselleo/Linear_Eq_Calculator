@@ -14,25 +14,69 @@ import java.io.InputStreamReader;
  */
 public class UserInput {
     
-    public static String getInput(){
+    public static String getInput() {
         
-        String i="";
-        boolean test = false;
-        while (test == false){
-            try{            
-                BufferedReader myReader = new BufferedReader(new InputStreamReader(System.in));
-                i=myReader.readLine();
-                if (i.length()>0){
-                    test=true;
-                } else {
-                    System.out.println("Fail on getting user input. Try again!");
-                }
-            } catch (Exception e){   
+        String input="";
+        try{            
+            BufferedReader myReader = new BufferedReader(new InputStreamReader(System.in));
+            input = myReader.readLine();
+            } catch (Exception e){  
                 System.out.println("Error");
             }
-        }
         
-        return i;
+        return input;
     }
+    
+    public static String getText(){
+        
+        String text="";
+        boolean t=false;
+        while (t==false){
+            try{            
+                BufferedReader myReader = new BufferedReader(new InputStreamReader(System.in));
+                text=myReader.readLine();
+                if ((!text.matches("^-?\\d*\\.{0,1}\\d+$")) && (text.length()>1)){
+                    t=true;
+                } else {
+                System.out.println("You did not insert a text");
+                }
+            } catch (Exception e){  
+                System.out.println("Error");
+            } 
+        }
+        return text;
+    }
+    
+    public static double getNumber (){
+        /*
+        * Author: Leonardo Diesel
+        */
+        double number=0.0;
+        while (number==0.0){
+            try{            
+                BufferedReader myReader = new BufferedReader(new InputStreamReader(System.in));
+                number=Double.parseDouble(myReader.readLine());
+            } catch (Exception e){   
+                System.out.println("You did not insert a number!");
+            }
+        }
+        return number;
+    }  
+    
+    public static Integer getOption (){
+        /*
+        * Author: Leonardo Diesel
+        */
+        Integer opt=-1;
+        while (opt==-1){
+            try{            
+                BufferedReader myReader = new BufferedReader(new InputStreamReader(System.in));
+                opt=Integer.parseInt(myReader.readLine());
+            } catch (Exception e){   
+                System.out.println("You did not insert a number!");
+            }
+        }
+        return opt;
+    } 
     
 }

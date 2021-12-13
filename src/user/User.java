@@ -29,7 +29,7 @@ public class User implements UserInterface{
     private String lName;
     private char type;
     
-    public User(String[] newUser) throws SQLException{
+    public User(String[] newUser){
         
         if (checkUser(newUser[0])==true){
             fullUser = getUser(newUser[0], newUser[1]);
@@ -50,68 +50,91 @@ public class User implements UserInterface{
         
     }
     
-    public String[] getUser(String user, String pass) throws SQLException{
+    public String[] getUser(String user, String pass){
         
         String[] dbUser = new String[5];
         conn = DatabaseConnector.getConnection();
-        stmt = conn.createStatement();
-        rs = stmt.executeQuery("SELECT * from user WHERE user_name='"+user+"' and password='"+pass+"'");
-        
-        
-        while(rs.next()) {
-            dbUser[0]=rs.getString("user_name");            
-            dbUser[1]=rs.getString("password");
-            dbUser[2]=rs.getString("first_name");
-            dbUser[3]=rs.getString("last_name");
-            dbUser[4]=rs.getString("type");
+        try {
+            
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT * from user WHERE user_name='"+user+"' and password='"+pass+"'");
+            
+            while(rs.next()) {
+                dbUser[0]=rs.getString("user_name");            
+                dbUser[1]=rs.getString("password");
+                dbUser[2]=rs.getString("first_name");
+                dbUser[3]=rs.getString("last_name");
+                dbUser[4]=rs.getString("type");
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        rs.close();
-        stmt.close();
-        conn.close();
         
         return dbUser;
         
     }
     
     @Override
-    public void createUser(String[] newUser) throws SQLException {
+    public void createUser(String[] newUser){
         conn = DatabaseConnector.getConnection();
-        stmt = conn.createStatement();
-        stmt.executeUpdate("INSERT INTO user (user_name, password, first_name, last_name, type) VALUES ('"+newUser[0]+"', '"+newUser[1]+"', '"+newUser[2]+"', '"+newUser[3]+"', 'U')");
+        try {
+            
+            stmt = conn.createStatement();
+            stmt.executeUpdate("INSERT INTO user (user_name, password, first_name, last_name, type) VALUES ('"+newUser[0]+"', '"+newUser[1]+"', '"+newUser[2]+"', '"+newUser[3]+"', 'U')");
+            
+            stmt.close();
+            conn.close();
         
-        stmt.close();
-        conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
-    public void deleteUser(String user) throws SQLException {
+    public void deleteUser(String user){
         conn = DatabaseConnector.getConnection();
-        stmt = conn.createStatement();
-        stmt.executeUpdate("DELETE FROM user WHERE user_name='"+user+"'");
-        
-        stmt.close();
-        conn.close();
+        try {
+            
+            stmt = conn.createStatement();
+            stmt.executeUpdate("DELETE FROM user WHERE user_name='"+user+"'");
+            
+            stmt.close();
+            
+            conn.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
-    public boolean checkUser (String user) throws SQLException{
+    public boolean checkUser (String user){
         
         conn = DatabaseConnector.getConnection();
-        stmt = conn.createStatement();
-        rs = stmt.executeQuery("SELECT user_name from user WHERE user_name like '%"+user+"%'");
-        
-        
-        
-        while(rs.next()) {
-            if (rs.getString("user_name").equals(user)){
-            return true;
+        try {
+            
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT user_name from user WHERE user_name like '%"+user+"%'");
+            
+            while(rs.next()) {
+                if (rs.getString("user_name").equals(user)){
+                    return true;
+                }
             }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        rs.close();
-        stmt.close();
-        conn.close();
         
         return false;
     }
@@ -169,42 +192,57 @@ public class User implements UserInterface{
     }
 
     @Override
-    public void setFName(String newFName, String user) throws SQLException {
+    public void setFName(String newFName, String user){
         conn = DatabaseConnector.getConnection();
-        stmt = conn.createStatement();
-        stmt.executeUpdate("UPDATE user SET first_name='"+newFName+"' WHERE user_name='"+user+"'");
-        
-        stmt.close();
-        conn.close();
-        
-        this.fName=newFName;
-        System.out.println("New First Name is "+newFName);
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE user SET first_name='"+newFName+"' WHERE user_name='"+user+"'");
+            
+            stmt.close();
+            conn.close();
+            
+            this.fName=newFName;
+            System.out.println("New First Name is "+newFName);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
-    public void setLName(String newLName, String user) throws SQLException {
+    public void setLName(String newLName, String user){
         conn = DatabaseConnector.getConnection();
-        stmt = conn.createStatement();
-        stmt.executeUpdate("UPDATE user SET last_name='"+newLName+"' WHERE user_name='"+user+"'");
-        
-        stmt.close();
-        conn.close();
-        
-        this.lName=newLName;
-        System.out.println("New Last Name is "+newLName);
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE user SET last_name='"+newLName+"' WHERE user_name='"+user+"'");
+            
+            stmt.close();
+            conn.close();
+            
+            this.lName=newLName;
+            System.out.println("New Last Name is "+newLName);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
-    public void setPassword(String newPass, String user) throws SQLException {
+    public void setPassword(String newPass, String user){
         conn = DatabaseConnector.getConnection();
-        stmt = conn.createStatement();
-        stmt.executeUpdate("UPDATE user SET password='"+newPass+"' WHERE user_name='"+user+"'");
-        
-        stmt.close();
-        conn.close();
-        
-        this.password=newPass;
-        System.out.println("New Password is "+newPass);
+        try {
+            stmt = conn.createStatement();
+            stmt.executeUpdate("UPDATE user SET password='"+newPass+"' WHERE user_name='"+user+"'");
+            
+            stmt.close();
+            conn.close();
+            
+            this.password=newPass;
+            System.out.println("New Password is "+newPass);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

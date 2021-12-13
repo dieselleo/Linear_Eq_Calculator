@@ -5,8 +5,15 @@
  */
 package equations;
 
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import user.User;
+import util.DatabaseConnector;
 
 /**
  *
@@ -14,36 +21,33 @@ import java.util.List;
  */
 public class Calculator implements CalculatorInterface{
     
+    private static Connection conn;
+    private static Statement stmt;
+    private static ResultSet rs;
     List<EquationInterface> equations;
     double[][] matrixA;
     double[][] matrixAI;
     double detA;
-    double[][] matrixX;
+    double[] matrixX;
     double[][] matrixB;
     double[][] coFactor;
     double[][] coFactorT;
     
-    public Calculator(Equation eq1, Equation eq2){
-        this.equations = new ArrayList<EquationInterface>();
-        this.equations.add(eq1);
-        this.equations.add(eq2);
-        setMatrices(equations);
-        calcInvA();
-        calcDetA();
-        calculate();
-    }
-    
-    public Calculator(Equation eq1, Equation eq2, Equation eq3){
-        this.equations = new ArrayList<EquationInterface>();
-        this.equations.add(eq1);
-        this.equations.add(eq2);
-        this.equations.add(eq3);
-        this.coFactor = new double[3][3];
-        this.coFactorT = new double[3][3];
-        setMatrices(equations);
-        calcDetA();
-        calcInvA();
-        calculate();
+    public Calculator(List<EquationInterface> equations){
+        this.equations = equations;
+        if(this.equations.size()>2){
+            this.coFactor = new double[3][3];
+            this.coFactorT = new double[3][3];
+            setMatrices(equations);
+            calcDetA();
+            calcInvA();
+            calculate();
+        } else {
+            setMatrices(equations);
+            calcInvA();
+            calcDetA();
+            calculate();
+        }        
     }
 
     @Override
@@ -55,14 +59,14 @@ public class Calculator implements CalculatorInterface{
     public void calculate() {
         if(this.equations.size()==2){
             double[][] calc = new double[this.matrixAI.length][this.matrixAI.length];
-            this.matrixX = new double[this.matrixAI.length][1];
+            this.matrixX = new double[this.matrixAI.length];
             for(int i=0; i<calc.length; i++){
                 for(int j=0; j< calc.length; j++){
                     calc[i][j] = ((this.matrixAI[i][j]*this.matrixB[j][0]));
                 }            
             }
-        this.matrixX[0][0] = (calc[0][0]+calc[0][1])*(1/this.detA);
-        this.matrixX[1][0] = (calc[1][0]+calc[1][1])*(1/this.detA);
+        this.matrixX[0] = (calc[0][0]+calc[0][1])*(1/this.detA);
+        this.matrixX[1] = (calc[1][0]+calc[1][1])*(1/this.detA);
         } else {
             // calculating matrix inverse
              double[][] calc = new double[3][3];
@@ -82,10 +86,10 @@ public class Calculator implements CalculatorInterface{
                      calc[2][2];
              
              // multiplying matrix inverse by matrix b
-             this.matrixX = new double[calc.length][1];
-             this.matrixX[0][0] = calc[0][0];
-             this.matrixX[1][0] = calc[1][0];
-             this.matrixX[2][0] = calc[2][0];
+             this.matrixX = new double[calc.length];
+             this.matrixX[0] = calc[0][0];
+             this.matrixX[1] = calc[1][0];
+             this.matrixX[2] = calc[2][0];
         }
         
         
@@ -181,6 +185,35 @@ public class Calculator implements CalculatorInterface{
         
     }
     
+    public void recordOperation(String user){
+        
+        int records=1;
+        conn = DatabaseConnector.getConnection();
+        try {
+            
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT count(id) as records from equations");
+            while(rs.next()) {
+                records = (Integer.parseInt(rs.getString("records")))+1;
+            }
+            
+            if(this.equations.size()==2){
+                stmt.executeUpdate("INSERT INTO equations (id, equation_1, equation_2, user) VALUES ("+records+",'"+this.equations.get(0).getEquation()+"', '"+this.equations.get(1).getEquation()+"', '"+user+"')");
+                stmt.executeUpdate("INSERT INTO eq_details (equation, x, y) VALUES ("+records+",'"+this.matrixX[0]+"', '"+this.matrixX[1]+"')");
+            } else {
+                stmt.executeUpdate("INSERT INTO equations (id, equation_1, equation_2, equation_3, user) VALUES ("+records+",'"+this.equations.get(0).getEquation()+"', '"+this.equations.get(1).getEquation()+"', '"+this.equations.get(2).getEquation()+"', '"+user+"')");
+                stmt.executeUpdate("INSERT INTO eq_details (equation, x, y, z) VALUES ("+records+",'"+this.matrixX[0]+"', '"+this.matrixX[1]+"', '"+this.matrixX[2]+"')");
+            }
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void printMatrixA(){
         System.out.println("\n == MATRIX A == ");
         for (int i = 0; i < this.matrixA.length; i++){
@@ -206,11 +239,7 @@ public class Calculator implements CalculatorInterface{
     public void printMatrixX(){
         System.out.println("\n == MATRIX X == ");
         for (int i = 0; i < this.matrixX.length; i++){
-            System.out.print("|");
-            for (int j = 0; j < this.matrixX[i].length; j++){
-                System.out.print(this.matrixX[i][j] + " ");
-            }
-            System.out.print("|\n");
+            System.out.println("| "+ this.matrixX[i] + " |");
         }
     }
     

@@ -5,17 +5,8 @@
  */
 package linear_eq_calculator;
 
-import equations.Calculator;
-import equations.CalculatorInterface;
-import equations.Equation;
-import equations.EquationInterface;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import menus.Menu;
-import util.DatabaseConnector;
-import util.UserInput;
 
 /**
  *
@@ -32,52 +23,39 @@ public class Linear_Eq_Calculator {
 //    private static ResultSet rs = null;
         
     public static void main(String[] args) throws SQLException {
-        // TODO code application logic here
-        
-//        conn = DatabaseConnector.getConnection();
-//        stmt = conn.createStatement();
-//        rs = stmt.executeQuery("SELECT * from user");
-//        
-//        while(rs.next()) {
-//            System.out.println( rs.getString("user_name")) ;
-//        }
-//        
-//        rs.close();
-//        stmt.close();
-//        conn.close();
 
-//        Menu menu = new Menu();
-//        while(menu.keepGoing()==true){
-//            menu.printMenu();
-//        }
+        Menu menu = new Menu();
+        while(menu.keepGoing()==true){
+            menu.printMenu();
+        }
 
-        Equation eq1 = new Equation(1,2,6);
-        Equation eq2 = new Equation(-6,12,-10);
-        Calculator calc = new Calculator(eq1, eq2);
-        for(EquationInterface e : calc.getEquations()){
-            System.out.println(e.getEquation());
-        }
-        calc.printMatrixA();
-        calc.printMatrixAI();
-        calc.printMatrixB();
-        System.out.println(calc.getDetA());
-        calc.printMatrixX();
-        
-        System.out.println("+++++++++++ new calculation ++++++++++++");
-        Equation eq3 = new Equation(3,2,-1,6);
-        Equation eq4 = new Equation(-2,2,1,3);
-        Equation eq5 = new Equation(1,1,1,4);
-        Calculator calc1 = new Calculator(eq3, eq4, eq5);
-        for(EquationInterface e : calc1.getEquations()){
-            System.out.println(e.getEquation());
-        }
-        calc1.printMatrixA();
-        calc1.printMatrixAI();
-        calc1.printMatrixB();
-        calc1.printCoFactor();
-        calc1.printCoFactorT();
-        System.out.println(calc1.getDetA());
-        calc1.printMatrixX();
+//        Equation eq1 = new Equation(1,2,6);
+//        Equation eq2 = new Equation(-6,12,-10);
+//        Calculator calc = new Calculator(eq1, eq2);
+//        for(EquationInterface e : calc.getEquations()){
+//            System.out.println(e.getEquation());
+//        }
+//        calc.printMatrixA();
+//        calc.printMatrixAI();
+//        calc.printMatrixB();
+//        System.out.println(calc.getDetA());
+//        calc.printMatrixX();
+//        
+//        System.out.println("+++++++++++ new calculation ++++++++++++");
+//        Equation eq3 = new Equation(3,2,-1,6);
+//        Equation eq4 = new Equation(-2,2,1,3);
+//        Equation eq5 = new Equation(1,1,1,4);
+//        Calculator calc1 = new Calculator(eq3, eq4, eq5);
+//        for(EquationInterface e : calc1.getEquations()){
+//            System.out.println(e.getEquation());
+//        }
+//        calc1.printMatrixA();
+//        calc1.printMatrixAI();
+//        calc1.printMatrixB();
+//        calc1.printCoFactor();
+//        calc1.printCoFactorT();
+//        System.out.println(calc1.getDetA());
+//        calc1.printMatrixX();
         
     }
     

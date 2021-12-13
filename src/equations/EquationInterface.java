@@ -13,12 +13,12 @@ public interface EquationInterface {
     
     public String getEquation ();
     
-    public Integer getX();
+    public Double getX();
 
-    public Integer getY();
+    public Double getY();
     
-    public Integer getZ();
+    public Double getZ();
 
-    public Integer getC();
+    public Double getC();
     
 }

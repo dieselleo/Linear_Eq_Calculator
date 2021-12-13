@@ -12,9 +12,9 @@ package equations;
 public class Equation implements EquationInterface{
     
     private String equation;
-    private Integer x,y,z,c;
+    private Double x,y,z,c;
     
-    public Equation (Integer x, Integer y, Integer z, Integer c){
+    public Equation (Double x, Double y, Double z, Double c){
 
         this.x = x;
         this.y = y;
@@ -24,11 +24,11 @@ public class Equation implements EquationInterface{
         this.equation=createEquation();        
     }
     
-    public Equation (Integer x, Integer y, Integer c){
+    public Equation (Double x, Double y, Double c){
 
         this.x = x;
         this.y = y;
-        this.z = 0;
+        this.z = 0.0;
         this.c = c;
         
         this.equation=createEquation();        
@@ -144,19 +144,19 @@ public class Equation implements EquationInterface{
 //        return zPos;
 //    }
 
-    public Integer getX() {
+    public Double getX() {
         return x;
     }
 
-    public Integer getY() {
+    public Double getY() {
         return y;
     }
     
-    public Integer getZ() {
+    public Double getZ() {
         return z;
     }
 
-    public Integer getC() {
+    public Double getC() {
         return c;
     }
 
