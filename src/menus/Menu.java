@@ -52,6 +52,7 @@ public class Menu implements MenuInterface{
         this.newUser = new String[5];
         this.numOpt = 0;
         this.operations =  new HashMap<>();
+        createAdmin();
         
                 
     }
@@ -205,7 +206,7 @@ public class Menu implements MenuInterface{
                                     System.out.println("The quation created is "+eq.getEquation());
                                 }
                                 Calculator calc2 = new Calculator(equations);
-                                calc2.printMatrixX();
+                                calc2.printResult();
                                 calc2.recordOperation(user.getUserName());
                                 this.equations.clear();
                                 System.out.println("\nWould you like to solve more equations?");
@@ -233,7 +234,7 @@ public class Menu implements MenuInterface{
                                     System.out.println("The quation created is "+eq.getEquation());
                                 }
                                 Calculator calc3 = new Calculator(equations);
-                                calc3.printMatrixX();
+                                calc3.printResult();
                                 calc3.recordOperation(user.getUserName());
                                 this.equations.clear();
                                 System.out.println("\nWould you like to solve more equations?");
@@ -471,6 +472,24 @@ public class Menu implements MenuInterface{
             System.out.println("Invalid Option. Try again!\n");
             this.option = UserInput.getOption();
         }
+    }
+    
+    private boolean createAdmin(){
+        
+        conn = DatabaseConnector.getConnection();
+        try {
+            
+            stmt = conn.createStatement();
+            stmt.executeUpdate("insert into calculator.user (user_name, password, type) values ('CCT', 'Dublin', 'A')");
+            
+            stmt.close();
+            conn.close();
+        
+        } catch (SQLException ex) {
+            return false;
+        }
+        
+        return true;
     }
     
 }

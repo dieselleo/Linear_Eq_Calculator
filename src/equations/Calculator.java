@@ -243,6 +243,25 @@ public class Calculator implements CalculatorInterface{
         }
     }
     
+    public void printResult(){
+        System.out.println("\nBelow, the result for the calculations between the matrices:");
+        if (this.matrixX.length<3){
+            System.out.println(this.equations.get(0).getEquation());
+            System.out.println(this.equations.get(1).getEquation());
+            System.out.println("\nResult:");
+            System.out.println("X = "+this.matrixX[0]);
+            System.out.println("Y = "+this.matrixX[1]);
+        } else {
+            System.out.println(this.equations.get(0).getEquation());
+            System.out.println(this.equations.get(1).getEquation());
+            System.out.println(this.equations.get(2).getEquation());
+            System.out.println("\nResult:");
+            System.out.println("X = "+this.matrixX[0]);
+            System.out.println("Y = "+this.matrixX[1]);
+            System.out.println("Z = "+this.matrixX[2]);
+        }
+    }
+    
     public void printMatrixAI(){
         System.out.println("\n == MATRIX A INVERSE == ");
         for (int i = 0; i < this.matrixAI.length; i++){
